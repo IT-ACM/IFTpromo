@@ -6,14 +6,14 @@
 
 const videos = [
   {
-    type: "local",
+    type: "Youtube",
     title: "Samuel y su experiencia con IFT",
-    url: "videos/video1.mp4"
+    url: "https://youtube.com/shorts/9cwaDAXkMwg?feature=share"
   },
   {
-    type: "local",
+    type: "Youtube",
     title: "Elias y su experiencia con IFT",
-    url: "videos/video2.mp4"
+    url: "https://youtube.com/shorts/9cwaDAXkMwg?feature=share"
   },
   {
     type: "local",
@@ -35,9 +35,22 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * Extrae el ID de un video de YouTube a partir de una URL de tipo embed.
  */
-function getYouTubeId(embedUrl) {
-  const match = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
-  return match ? match[1] : null;
+function getYouTubeId(url) {
+  try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.hostname === "youtu.be") {
+      return parsedUrl.pathname.slice(1).split("/")[0] || null;
+    }
+
+    if (parsedUrl.pathname.startsWith("/embed/") || parsedUrl.pathname.startsWith("/shorts/")) {
+      return parsedUrl.pathname.split("/")[2] || null;
+    }
+
+    return parsedUrl.searchParams.get("v");
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -56,7 +69,7 @@ function renderVideos(list) {
     const frame = document.createElement("div");
     frame.className = "video-card__frame";
 
-    if (item.type === "youtube") {
+    if (item.type.toLowerCase() === "youtube") {
       frame.appendChild(buildYouTubeFacade(item));
     } else if (item.type === "local") {
       frame.appendChild(buildLocalVideo(item));
@@ -126,7 +139,7 @@ function buildYouTubeFacade(item) {
 
   wrapper.addEventListener("click", () => {
     const iframe = document.createElement("iframe");
-    iframe.src = `${item.url}?autoplay=1&rel=0`;
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     iframe.title = item.title;
     iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
     iframe.allowFullscreen = true;

@@ -77,6 +77,11 @@ button:focus-visible {
     opacity: 1 !important;
     transform: none !important;
   }
+
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
 }
 
 /* =====================================================
@@ -94,13 +99,66 @@ button:focus-visible {
   isolation: isolate;
 }
 
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity, clip-path;
+}
+
+.hero::before {
+  width: 240vmax;
+  height: 240vmax;
+  border-radius: 50%;
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 11px),
+    linear-gradient(160deg, #174452 0%, #0b3040 58%, #062331 100%);
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.32);
+  clip-path: circle(50% at 50% 50%);
+  animation: circularWallBreak 7s var(--ease-standard) infinite;
+}
+
+.hero::after {
+  width: min(76vw, 760px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 8deg,
+    transparent 0 6deg,
+    rgba(224, 205, 151, 0.95) 6deg 8deg,
+    transparent 8deg 21deg,
+    rgba(224, 205, 151, 0.8) 21deg 23deg,
+    transparent 23deg 43deg,
+    rgba(255, 255, 255, 0.8) 43deg 45deg,
+    transparent 45deg 68deg,
+    rgba(199, 162, 86, 0.9) 68deg 71deg,
+    transparent 71deg 100deg,
+    rgba(224, 205, 151, 0.85) 100deg 102deg,
+    transparent 102deg 151deg,
+    rgba(255, 255, 255, 0.8) 151deg 153deg,
+    transparent 153deg 201deg,
+    rgba(224, 205, 151, 0.9) 201deg 204deg,
+    transparent 204deg 257deg,
+    rgba(199, 162, 86, 0.9) 257deg 260deg,
+    transparent 260deg 303deg,
+    rgba(255, 255, 255, 0.8) 303deg 305deg,
+    transparent 305deg 360deg
+  );
+  filter: drop-shadow(0 0 8px rgba(224, 205, 151, 0.5));
+  animation: crackRing 7s var(--ease-standard) infinite;
+}
+
 .hero__bg {
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(circle at 18% 12%, rgba(199, 162, 86, 0.16), transparent 42%),
-    radial-gradient(circle at 82% 88%, rgba(13, 66, 86, 0.75), transparent 55%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 11px),
     linear-gradient(160deg, var(--color-base-deep) 0%, var(--color-base) 55%, var(--color-base-soft) 100%);
 }
 
@@ -112,24 +170,23 @@ button:focus-visible {
   align-items: center;
   text-align: center;
   gap: clamp(2.5rem, 6vw, 4rem);
+  position: relative;
+  z-index: 1;
 }
 
 .hero__logo-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-white);
-  padding: 0.7rem 1.4rem;
-  border-radius: 14px;
-  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.35);
+  padding: 0;
   opacity: 0;
   animation: fadeDown 0.9s var(--ease-standard) 0.15s forwards;
 }
 
 .hero__logo {
-  height: clamp(32px, 5vw, 44px);
-  width: auto;
-  max-width: 1800px;
+  width: clamp(190px, 40vw, 280px);
+  height: 110px;
+  max-width: 100%;
   object-fit: contain;
   margin: 0 auto;
 }
@@ -178,21 +235,27 @@ button:focus-visible {
 .hero__percent {
   position: relative;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.2rem, 1.2vw, 0.8rem);
   font-size: clamp(5.5rem, 22vw, 11rem);
   font-weight: 600;
   line-height: 0.95;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
-/* Cada carácter cae desde arriba, se sostiene y sale por la derecha; se repite en bucle */
+/* Cada carácter pulsa en su propio espacio para mantener legible la oferta. */
 .hero__percent-letter {
   display: inline-block;
+  min-width: 0.55em;
+  text-align: center;
   color: var(--color-orange);
   text-shadow: 0 0 45px rgba(255, 107, 0, 0.4);
-  opacity: 0;
-  transform: translate(0, -140%);
-  animation: letterCycle 3.4s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.16s);
+  opacity: 1;
+  transform: scale(1);
+  transform-origin: center bottom;
+  animation: letterPulse 2.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.12s);
 }
 
 .hero__percent-symbol {
@@ -374,26 +437,52 @@ button:focus-visible {
   to   { opacity: 1; }
 }
 
-@keyframes letterCycle {
-  0% {
-    opacity: 0;
-    transform: translate(0, -140%);
+@keyframes letterPulse {
+  0%, 100% {
+    opacity: 0.92;
+    transform: scale(1);
   }
-  14% {
+  48% {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: scale(1.08);
   }
   62% {
+    opacity: 0.96;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes circularWallBreak {
+  0%, 12% {
+    clip-path: circle(50% at 50% 50%);
+  }
+  16% {
+    clip-path: circle(48% at 50% 50%);
+  }
+  22%, 78% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  92%, 100% {
+    clip-path: circle(50% at 50% 50%);
+  }
+}
+
+@keyframes crackRing {
+  0%, 12% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(-8deg);
+  }
+  16% {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(-50%, -50%) scale(0.72) rotate(2deg);
   }
-  82% {
-    opacity: 0;
-    transform: translate(140%, 0);
+  25%, 70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0);
   }
-  100% {
+  82%, 100% {
     opacity: 0;
-    transform: translate(0, -140%);
+    transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
   }
 }
 
@@ -406,6 +495,11 @@ button:focus-visible {
    RESPONSIVE ADJUSTMENTS
    ===================================================== */
 @media (max-width: 480px) {
+  .hero__logo {
+    width: 210px;
+    height: 90px;
+  }
+
   .hero__content {
     gap: 2.25rem;
   }
