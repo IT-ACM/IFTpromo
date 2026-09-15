@@ -1,0 +1,418 @@
+/* =====================================================
+   TOKENS / VARIABLES
+   ===================================================== */
+:root {
+  --color-base: #012b3b;
+  --color-base-deep: #011c27;
+  --color-base-soft: #0d4256;
+  --color-cream: #f6f2e9;
+  --color-cream-dim: #ece4d3;
+  --color-ink: #04141c;
+  --color-white: #ffffff;
+  --color-gold: #c7a256;
+  --color-gold-soft: #e4cd97;
+  --color-red: #d1373f;
+  --color-orange: #FF6B00;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+
+  --max-width: 1180px;
+  --space-section: clamp(4rem, 8vw, 7.5rem);
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =====================================================
+   RESET / BASE
+   ===================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Focus visibility for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero__percent-letter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =====================================================
+   SECCIÓN 1 — HERO
+   ===================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(199, 162, 86, 0.16), transparent 42%),
+    radial-gradient(circle at 82% 88%, rgba(13, 66, 86, 0.75), transparent 55%),
+    linear-gradient(160deg, var(--color-base-deep) 0%, var(--color-base) 55%, var(--color-base-soft) 100%);
+}
+
+.hero__content {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.hero__logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  padding: 0.7rem 1.4rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  animation: fadeDown 0.9s var(--ease-standard) 0.15s forwards;
+}
+
+.hero__logo {
+  height: clamp(32px, 5vw, 44px);
+  width: auto;
+  max-width: 1800px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.hero__message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hero__kicker {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  color: var(--color-gold-soft);
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeDown 0.9s var(--ease-standard) 0.3s forwards;
+}
+
+.hero__title {
+  margin: 0.4rem 0 0;
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.2rem, 1vw, 0.6rem);
+}
+
+.hero__title-line {
+  font-size: clamp(1.5rem, 4.2vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  animation: fadeUp 0.9s var(--ease-standard) 0.45s forwards;
+}
+
+.hero__title-line:last-child {
+  animation-delay: 0.75s;
+}
+
+.hero__percent {
+  position: relative;
+  display: inline-flex;
+  font-size: clamp(5.5rem, 22vw, 11rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+/* Cada carácter cae desde arriba, se sostiene y sale por la derecha; se repite en bucle */
+.hero__percent-letter {
+  display: inline-block;
+  color: var(--color-orange);
+  text-shadow: 0 0 45px rgba(255, 107, 0, 0.4);
+  opacity: 0;
+  transform: translate(0, -140%);
+  animation: letterCycle 3.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.16s);
+}
+
+.hero__percent-symbol {
+  font-size: 0.5em;
+  vertical-align: 0.28em;
+  margin-left: 0.05em;
+}
+
+.hero__subtitle {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: rgba(246, 242, 233, 0.78);
+  max-width: 34ch;
+  line-height: 1.5;
+  opacity: 0;
+  animation: fadeUp 0.9s var(--ease-standard) 0.95s forwards;
+}
+
+/* Scroll CTA */
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.5rem, 4vh, 2.75rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: rgba(246, 242, 233, 0.85);
+  padding: 0.5rem 1rem;
+  opacity: 0;
+  animation: fadeIn 0.9s var(--ease-standard) 1.2s forwards;
+}
+
+.hero__scroll-text {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hero__scroll-arrow {
+  animation: bounce 2.2s ease-in-out infinite;
+}
+
+/* =====================================================
+   SECCIÓN 2 — VIDEOS
+   ===================================================== */
+.videos {
+  background: var(--color-cream);
+  padding: var(--space-section) clamp(1.25rem, 5vw, 3rem);
+}
+
+.videos__intro {
+  max-width: 640px;
+  margin: 0 auto clamp(2.5rem, 6vw, 4rem);
+  text-align: center;
+}
+
+.videos__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--color-base-soft);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.videos__title {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  color: var(--color-base);
+  letter-spacing: -0.01em;
+}
+
+.videos__text {
+  margin: 0;
+  font-size: 1.02rem;
+  color: rgba(4, 20, 28, 0.65);
+  line-height: 1.6;
+}
+
+.videos__grid {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 260px));
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* Video card */
+.video-card {
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+  background: var(--color-white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px -14px rgba(1, 43, 59, 0.28);
+  border: 1px solid rgba(1, 43, 59, 0.06);
+  transition: transform 0.45s var(--ease-standard), box-shadow 0.45s var(--ease-standard);
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 42px -16px rgba(1, 43, 59, 0.34);
+}
+
+.video-card__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: var(--color-base-deep);
+  overflow: hidden;
+}
+
+.video-card__frame iframe,
+.video-card__frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: var(--color-base-deep);
+}
+
+.video-card__body {
+  padding: 1.15rem 1.3rem 1.35rem;
+}
+
+.video-card__title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* =====================================================
+   REVEAL ON SCROLL (IntersectionObserver hooks)
+   ===================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s var(--ease-standard), transform 0.8s var(--ease-standard);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.video-card.reveal:nth-child(2) { transition-delay: 0.08s; }
+.video-card.reveal:nth-child(3) { transition-delay: 0.16s; }
+.video-card.reveal:nth-child(4) { transition-delay: 0.24s; }
+.video-card.reveal:nth-child(5) { transition-delay: 0.32s; }
+.video-card.reveal:nth-child(6) { transition-delay: 0.4s; }
+
+/* =====================================================
+   KEYFRAMES
+   ===================================================== */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes letterCycle {
+  0% {
+    opacity: 0;
+    transform: translate(0, -140%);
+  }
+  14% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  62% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  82% {
+    opacity: 0;
+    transform: translate(140%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -140%);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
+/* =====================================================
+   RESPONSIVE ADJUSTMENTS
+   ===================================================== */
+@media (max-width: 480px) {
+  .hero__content {
+    gap: 2.25rem;
+  }
+
+  .videos__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACM Group</title>
+  <meta name="description" content="Aprovechá el 50% de descuento en una oferta exclusiva por tiempo limitado.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================================================== -->
+  <!-- SECCIÓN 1 — HERO / OFERTA PRINCIPAL -->
+  <!-- ===================================================== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <div class="hero__logo-wrap">
+        <img src="logo.png" alt="Logo de la empresa" class="hero__logo">
+      </div>
+
+      <div class="hero__message">
+        <h1 class="hero__title">
+          <span class="hero__title-line">Tenés</span>
+          <span class="hero__percent" aria-label="50%">
+            <span class="hero__percent-letter" style="--i:0" aria-hidden="true">-</span>
+            <span class="hero__percent-letter" style="--i:0" aria-hidden="true">5</span>
+            <span class="hero__percent-letter" style="--i:1" aria-hidden="true">0</span>
+            <span class="hero__percent-letter hero__percent-symbol" style="--i:2" aria-hidden="true">%</span>
+          </span>
+          <span class="hero__title-line">de descuento</span>
+        </h1>
+        <p class="hero__subtitle">Una oportunidad unica que no podés dejar pasar.</p>
+      </div>
+    </div>
+
+    <button class="hero__scroll" id="scrollCta" aria-label="Desplazarse a la siguiente sección">
+      <span class="hero__scroll-text">Conocé más</span>
+      <svg class="hero__scroll-arrow" width="22" height="34" viewBox="0 0 22 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M11 1V33M11 33L1 23M11 33L21 23" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- SECCIÓN 2 — VIDEOS -->
+  <!-- ===================================================== -->
+  <section class="videos" id="videos">
+    <div class="videos__intro reveal">
+      <p class="videos__eyebrow">Nuestra experiencia</p>
+      <h2 class="videos__title">Conocé de la boca de quienes ya lo vivieron</h2>
+      <p class="videos__text">Mirá de cerca cómo trabajamos y por qué esta promoción vale la pena.</p>
+    </div>
+
+    <div class="videos__grid" id="videosGrid">
+      <!-- Las tarjetas de video se generan dinámicamente desde script.js -->
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
