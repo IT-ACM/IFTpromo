@@ -82,6 +82,11 @@ button:focus-visible {
   .hero::after {
     display: none;
   }
+
+  .hero__confetti::before,
+  .hero__confetti::after {
+    animation: none !important;
+  }
 }
 
 /* =====================================================
@@ -124,33 +129,7 @@ button:focus-visible {
 }
 
 .hero::after {
-  width: min(76vw, 760px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 8deg,
-    transparent 0 6deg,
-    rgba(224, 205, 151, 0.95) 6deg 8deg,
-    transparent 8deg 21deg,
-    rgba(224, 205, 151, 0.8) 21deg 23deg,
-    transparent 23deg 43deg,
-    rgba(255, 255, 255, 0.8) 43deg 45deg,
-    transparent 45deg 68deg,
-    rgba(199, 162, 86, 0.9) 68deg 71deg,
-    transparent 71deg 100deg,
-    rgba(224, 205, 151, 0.85) 100deg 102deg,
-    transparent 102deg 151deg,
-    rgba(255, 255, 255, 0.8) 151deg 153deg,
-    transparent 153deg 201deg,
-    rgba(224, 205, 151, 0.9) 201deg 204deg,
-    transparent 204deg 257deg,
-    rgba(199, 162, 86, 0.9) 257deg 260deg,
-    transparent 260deg 303deg,
-    rgba(255, 255, 255, 0.8) 303deg 305deg,
-    transparent 305deg 360deg
-  );
-  filter: drop-shadow(0 0 8px rgba(224, 205, 151, 0.5));
-  animation: crackRing 7s var(--ease-standard) infinite;
+  display: none;
 }
 
 .hero__bg {
@@ -171,7 +150,59 @@ button:focus-visible {
   text-align: center;
   gap: clamp(2.5rem, 6vw, 4rem);
   position: relative;
+  z-index: 4;
+}
+
+.hero__confetti {
+  position: absolute;
+  inset: 0;
   z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero__confetti::before,
+.hero__confetti::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 8%;
+  width: 8px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--color-orange);
+  box-shadow:
+    9vw 5vh 0 -1px var(--color-gold-soft),
+    18vw -2vh 0 -1px var(--color-white),
+    27vw 14vh 0 -1px var(--color-orange),
+    36vw 3vh 0 -1px var(--color-gold),
+    45vw 18vh 0 -1px var(--color-gold-soft),
+    54vw -4vh 0 -1px var(--color-white),
+    63vw 9vh 0 -1px var(--color-orange),
+    72vw 1vh 0 -1px var(--color-gold),
+    81vw 16vh 0 -1px var(--color-gold-soft),
+    90vw 4vh 0 -1px var(--color-white);
+  opacity: 0.9;
+  animation: skyConfettiFall 4.2s linear infinite;
+}
+
+.hero__confetti::after {
+  left: 3%;
+  width: 6px;
+  height: 13px;
+  background: var(--color-gold-soft);
+  box-shadow:
+    13vw 12vh 0 -1px var(--color-orange),
+    23vw 0 0 -1px var(--color-gold),
+    33vw 20vh 0 -1px var(--color-white),
+    43vw 7vh 0 -1px var(--color-orange),
+    57vw 15vh 0 -1px var(--color-gold-soft),
+    67vw -1vh 0 -1px var(--color-white),
+    77vw 22vh 0 -1px var(--color-orange),
+    87vw 8vh 0 -1px var(--color-gold),
+    96vw 17vh 0 -1px var(--color-gold-soft);
+  animation-delay: -2.4s;
+  animation-duration: 4.8s;
 }
 
 .hero__logo-wrap {
@@ -210,7 +241,7 @@ button:focus-visible {
 
 .hero__title {
   margin: 0.4rem 0 0;
-  color: var(--color-white);
+  color: var(--color-gold-soft);
   font-family: var(--font-display);
   font-weight: 500;
   line-height: 1;
@@ -222,8 +253,10 @@ button:focus-visible {
 
 .hero__title-line {
   font-size: clamp(1.5rem, 4.2vw, 2.4rem);
+  color: var(--color-orange);
   font-weight: 400;
   letter-spacing: 0.01em;
+  text-shadow: 0 3px 18px rgba(255, 107, 0, 0.32);
   opacity: 0;
   animation: fadeUp 0.9s var(--ease-standard) 0.45s forwards;
 }
@@ -250,11 +283,11 @@ button:focus-visible {
   min-width: 0.55em;
   text-align: center;
   color: var(--color-orange);
-  text-shadow: 0 0 45px rgba(255, 107, 0, 0.4);
+  text-shadow: 0 4px 22px rgba(255, 107, 0, 0.42);
   opacity: 1;
   transform: scale(1);
   transform-origin: center bottom;
-  animation: letterPulse 2.2s ease-in-out infinite;
+  animation: letterPulse 1.35s ease-in-out infinite;
   animation-delay: calc(var(--i) * 0.12s);
 }
 
@@ -442,13 +475,30 @@ button:focus-visible {
     opacity: 0.92;
     transform: scale(1);
   }
-  48% {
+  24% {
     opacity: 1;
-    transform: scale(1.08);
+    transform: scale(1.08) translateY(-2px);
   }
-  62% {
+  38% {
+    opacity: 0.98;
+    transform: scale(1.02) translateY(1px) rotate(-1deg);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.06) translateY(-1px) rotate(1deg);
+  }
+  66% {
     opacity: 0.96;
-    transform: scale(1.02);
+    transform: scale(1.01) translateY(0);
+  }
+}
+
+@keyframes skyConfettiFall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(4vw, 112vh, 0) rotate(420deg);
   }
 }
 
@@ -464,25 +514,6 @@ button:focus-visible {
   }
   92%, 100% {
     clip-path: circle(50% at 50% 50%);
-  }
-}
-
-@keyframes crackRing {
-  0%, 12% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2) rotate(-8deg);
-  }
-  16% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.72) rotate(2deg);
-  }
-  25%, 70% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(0);
-  }
-  82%, 100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
   }
 }
 
