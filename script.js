@@ -6,9 +6,9 @@
 
 const videos = [
   {
-    type: "Youtube",
+    type: "video",
     title: "Samuel y su experiencia con IFT",
-    url: "https://youtube.com/shorts/9cwaDAXkMwg?feature=share"
+    url: "https://tldpjbzavxbgdjnmrldb.supabase.co/storage/v1/object/public/videos/video1.mp4"
   },
   {
     type: "Youtube",
@@ -71,7 +71,7 @@ function renderVideos(list) {
 
     if (item.type.toLowerCase() === "youtube") {
       frame.appendChild(buildYouTubeFacade(item));
-    } else if (item.type === "local") {
+    } else if (item.type.toLowerCase() === "local" || item.type.toLowerCase() === "video") {
       frame.appendChild(buildLocalVideo(item));
     }
 
@@ -155,6 +155,7 @@ function buildYouTubeFacade(item) {
 function buildLocalVideo(item) {
   const video = document.createElement("video");
   video.src = item.url;
+  video.crossOrigin = item.url.startsWith("http") ? "anonymous" : "";
   video.controls = true;
   video.playsInline = true;
   video.preload = "metadata";
