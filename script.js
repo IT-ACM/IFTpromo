@@ -8,15 +8,15 @@ const videos = [
   {
     type: "video",
     title: "Samuel y su experiencia con IFT",
-    url: "https://tldpjbzavxbgdjnmrldb.supabase.co/storage/v1/object/public/videos/video1.mp4"
+    url: "videos/video1.mp4"
   },
   {
-    type: "Youtube",
+    type: "video",
     title: "Elias y su experiencia con IFT",
-    url: "https://youtube.com/shorts/9cwaDAXkMwg?feature=share"
+    url: "videos/video2.mp4"
   },
   {
-    type: "local",
+    type: "video",
     title: "Romel y su experiencia con IFT",
     url: "videos/video3.mp4"
   }
