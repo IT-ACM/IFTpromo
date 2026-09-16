@@ -6,19 +6,19 @@
 
 const videos = [
   {
-    type: "video",
+    type: "local",
     title: "Samuel y su experiencia con IFT",
     url: "https://tldpjbzavxbgdjnmrldb.supabase.co/storage/v1/object/public/videos/video1.mp4"
   },
   {
-    type: "Youtube",
+    type: "video",
     title: "Elias y su experiencia con IFT",
-    url: "https://youtube.com/shorts/9cwaDAXkMwg?feature=share"
+    url: "https://tldpjbzavxbgdjnmrldb.supabase.co/storage/v1/object/public/videos/Video2.mp4"
   },
   {
-    type: "local",
+    type: "video",
     title: "Romel y su experiencia con IFT",
-    url: "videos/video4.mp4"
+    url: "https://tldpjbzavxbgdjnmrldb.supabase.co/storage/v1/object/public/videos/Video3.mp4"
   }
 ];
 
@@ -69,9 +69,13 @@ function renderVideos(list) {
     const frame = document.createElement("div");
     frame.className = "video-card__frame";
 
-    if (item.type.toLowerCase() === "youtube") {
+    const type = (item.type || "").toLowerCase();
+
+    if (type === "youtube") {
       frame.appendChild(buildYouTubeFacade(item));
-    } else if (item.type.toLowerCase() === "local" || item.type.toLowerCase() === "video") {
+    } else if (type === "streamable") {
+      frame.appendChild(buildStreamableVideo(item));
+    } else if (type === "local" || type === "video") {
       frame.appendChild(buildLocalVideo(item));
     }
 
@@ -87,6 +91,38 @@ function renderVideos(list) {
     card.appendChild(body);
     grid.appendChild(card);
   });
+}
+
+function getStreamableId(url) {
+  try {
+    const parsedUrl = new URL(url);
+    if (!parsedUrl.hostname.includes("streamable.com")) return null;
+
+    const cleanedPath = parsedUrl.pathname.replace(/^\/+|\/+$/g, "");
+    if (!cleanedPath) return null;
+
+    const parts = cleanedPath.split("/");
+    const id = parts[0] || parts[1] || null;
+    return id && id.length > 2 ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+function buildStreamableVideo(item) {
+  const streamableId = getStreamableId(item.url);
+  const iframe = document.createElement("iframe");
+  iframe.src = streamableId ? `https://streamable.com/e/${streamableId}` : item.url;
+  iframe.title = item.title;
+  iframe.allow = "autoplay; fullscreen; picture-in-picture";
+  iframe.allowFullscreen = true;
+  iframe.loading = "lazy";
+  iframe.setAttribute("frameborder", "0");
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.border = "0";
+  iframe.style.background = "#000";
+  return iframe;
 }
 
 /**
