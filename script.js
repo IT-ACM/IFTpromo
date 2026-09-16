@@ -6,7 +6,7 @@
 
 const videos = [
   {
-    type: "video",
+    type: "local",
     title: "Samuel y su experiencia con IFT",
     url: "videos/video4.mp4"
   },
