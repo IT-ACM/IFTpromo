@@ -8,7 +8,7 @@ const videos = [
   {
     type: "video",
     title: "Samuel y su experiencia con IFT",
-    url: "videos/video1.mp4"
+    url: "videos/video4.mp4"
   },
   {
     type: "video",
